@@ -14,6 +14,5 @@ def load_papers(directory):
     docs = Docs()
     for filename in os.listdir(directory):
         if filename.endswith('.pdf') or filename.endswith('.txt'):
-            filepath = os.path.join(directory, filename)
-            docs.add(filepath)
+            docs.add(os.path.join(directory, filename))
     return docs
