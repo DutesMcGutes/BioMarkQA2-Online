@@ -1,0 +1,11 @@
+Biomarker,Condition,Clinical Use
+| **Biomarker Name** | **Associated Condition(s)** | **Clinical Significance** | **Relevant Paper Reference** |,,
+|--------------------|----------------------------|---------------------------|-----------------------------|,,
+| E-cadherin         | Ovarian Cancer (OvCa)     | Upregulation indicates an enhanced epithelial phenotype and reduced mesenchymal phenotype, associated with favorable prognosis. | xiang2024multifacetedcanceralleviation pages 8-9, xiang2024multifacetedcanceralleviation pages 9-10 |
+| N-cadherin         | Ovarian Cancer (OvCa)     | Variable expression; slight increase in ID8/RAW/CPMV and downregulation in ID8/SUP/CPMV, reflecting context-dependent roles in tumor progression. | xiang2024multifacetedcanceralleviation pages 9-10 |,
+| ZEB1               | Ovarian Cancer (OvCa)     | Downregulation in ID8/SUP/CPMV suggests reduced mesenchymal phenotype, potentially improving prognosis. | xiang2024multifacetedcanceralleviation pages 9-10 |,
+| MKi67              | Ovarian Cancer (OvCa)     | Proliferation marker; unchanged in ID8/RAW/CPMV but downregulated in ID8/SUP/CPMV, indicating reduced tumor cell proliferation in specific contexts. | xiang2024multifacetedcanceralleviation pages 9-10 |,
+| SMAD3              | Ovarian Cancer (OvCa)     | Downregulation in both scaffolds, potentially linked to modulation of tumor growth and immune response. | xiang2024multifacetedcanceralleviation pages 9-10 |,
+| CSF-1              | Ovarian Cancer (OvCa)     | Upregulated in ID8/RAW/CPMV but downregulated in ID8/SUP/CPMV; associated with colony and spheroid promotion, influencing tumor microenvironment. | xiang2024multifacetedcanceralleviation pages 9-10 |,
+| Connexin43 (CXN43) | Ovarian Cancer (OvCa)     | Mediates GAP junctions, suggesting a role in cell adhesion and tumor microenvironment modulation. | xiang2024multifacetedcanceralleviation pages 8-9 |,
+| Tumor-Associated Macrophages (TAMs) | Ovarian Cancer (OvCa) | Key drivers of spheroid formation in metastasis; potential therapeutic targets due to their role in immune modulation. | xiang2024multifacetedcanceralleviation pages 18-19, xiang2024multifacetedcanceralleviation pages 19-20 |,
