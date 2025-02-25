@@ -1,8 +1,22 @@
-from paperqa import Docs  # Correct import based on PaperQA's available methods
+from paperqa import Docs
+
+# Define a structured prompt template
+PROMPT_TEMPLATE = """
+You are a biomedical literature expert. Your task is to extract relevant information from scientific papers. 
+Focus on biomarkers, their roles, associated conditions, and clinical significance.
+Use the following structured format:
+
+- **Biomarker Name:** 
+- **Associated Condition(s):** 
+- **Clinical Significance:** 
+- **Relevant Paper Reference:** 
+
+Now, answer this query: {query_text}
+"""
 
 def retrieve_sections(docs, query_text):
     """
-    Queries the document database to retrieve relevant text sections.
+    Queries the document database with a structured prompt.
 
     Args:
         docs (Docs): PaperQA Docs instance.
@@ -11,7 +25,8 @@ def retrieve_sections(docs, query_text):
     Returns:
         str: Retrieved text relevant to the query.
     """
-    response = docs.query(query_text)  # PaperQA uses the `query` method on `Docs`
+    formatted_query = PROMPT_TEMPLATE.format(query_text=query_text)
+    response = docs.query(formatted_query)  # Uses PaperQA's `query` method
     
     if response:
         return response.answer
