@@ -1,5 +1,5 @@
-from biomarkqa2.retrieval import retrieve_sections
-from biomarkqa2.data_processing import load_papers
+from biomarkqa2_model.retrieval import retrieve_sections
+from biomarkqa2_model.data_processing import load_papers
 import config
 
 def test_retrieval():

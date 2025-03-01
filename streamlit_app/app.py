@@ -1,8 +1,9 @@
 import streamlit as st
 import os
-from biomarkqa2.retrieval import retrieve_sections
-from biomarkqa2.data_processing import load_papers
-from biomarkqa2 import config
+import pandas as pd
+from biomarkqa2_model.retrieval import retrieve_sections
+from biomarkqa2_model.data_processing import load_papers
+from biomarkqa2_model import config
 
 # --- STREAMLIT PAGE SETTINGS ---
 st.set_page_config(page_title="BioMarkQA2 Chat", layout="wide")
@@ -41,6 +42,8 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "selected_prompt" not in st.session_state:
     st.session_state.selected_prompt = list(config.PROMPT_TEMPLATES.keys())[0]
+if "table_df" not in st.session_state:
+    st.session_state.table_df = None  # Store table data
 
 # --- OPENAI API KEY INPUT ---
 st.sidebar.header("🔑 API Settings")
@@ -75,3 +78,42 @@ for entry in st.session_state.chat_history[::-1]:  # Reverse to show newest firs
     st.markdown(f"**User:** {entry['query']}")
     st.markdown(f"**BioMarkQA2:**\n{entry['response']}")
     st.divider()
+
+# --- TABLE GENERATION SECTION ---
+st.sidebar.header("📊 Generate Biomarker Table")
+table_query = st.sidebar.text_input("Enter a query for structured biomarkers:", placeholder="List biomarkers for lung cancer")
+
+if st.sidebar.button("Generate Table"):
+    if not st.session_state.api_key:
+        st.sidebar.warning("⚠️ Please enter an OpenAI API key.")
+    else:
+        structured_query = (
+            "Generate a structured table of biomarkers with these columns:\n\n"
+            "**Biomarker Name** | **Associated Condition(s)** | **Clinical Significance** | **Relevant Paper Reference**\n\n"
+            + table_query
+        )
+        
+        table_response = retrieve_sections(docs, structured_query)
+
+        # Convert response into table format
+        try:
+            rows = [row.split("|") for row in table_response.split("\n") if row]
+            df = pd.DataFrame(rows, columns=["Biomarker Name", "Associated Condition(s)", "Clinical Significance", "Relevant Paper Reference"])
+            st.session_state.table_df = df
+        except:
+            st.session_state.table_df = None
+            st.sidebar.error("❌ Failed to generate a structured table.")
+
+# --- DISPLAY TABLE & DOWNLOAD OPTION ---
+if st.session_state.table_df is not None:
+    st.sidebar.subheader("📋 Biomarker Table")
+    st.sidebar.dataframe(st.session_state.table_df)
+
+    # Save table to CSV
+    csv_data = st.session_state.table_df.to_csv(index=False)
+    st.sidebar.download_button(
+        label="📥 Download Table as CSV",
+        data=csv_data,
+        file_name="biomarkers.csv",
+        mime="text/csv"
+    )

@@ -1,4 +1,4 @@
-from biomarkqa2.generation import generate_answer
+from biomarkqa2_model.generation import generate_answer
 
 def test_generation():
     response = "Biomarkers such as troponin and CRP are associated with cardiovascular disease."

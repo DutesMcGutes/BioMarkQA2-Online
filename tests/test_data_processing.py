@@ -1,5 +1,5 @@
 import os
-from biomarkqa2.data_processing import load_papers
+from biomarkqa2_model.data_processing import load_papers
 import config
 
 def test_load_papers():
