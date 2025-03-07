@@ -48,7 +48,15 @@ if "table_df" not in st.session_state:
 # --- OPENAI API KEY INPUT ---
 st.sidebar.header("🔑 API Settings")
 st.session_state.api_key = st.sidebar.text_input(
-    "Enter your OpenAI API Key:", value=st.session_state.api_key, type="password"
+    "Enter your OpenAI API Key:", value=st.session_state.get("api_key", config.OPENAI_API_KEY), type="password"
+)
+
+# --- SEMANTIC SCHOLAR API KEY INPUT ---
+st.sidebar.header("📚 Semantic Scholar API")
+st.session_state.semantic_api_key = st.sidebar.text_input(
+    "Enter your Semantic Scholar API Key:",
+    value=st.session_state.get("semantic_api_key", config.SEMANTIC_SCHOLAR_API_KEY),
+    type="password"
 )
 
 # --- PROMPT SELECTION ---
