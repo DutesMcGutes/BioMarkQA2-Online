@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import pandas as pd
+import re
 from biomarkqa2_model.retrieval import retrieve_sections
 from biomarkqa2_model.data_processing import load_papers
 from biomarkqa2_model import config
@@ -45,18 +46,21 @@ if "selected_prompt" not in st.session_state:
 if "table_df" not in st.session_state:
     st.session_state.table_df = None  # Store table data
 
-# --- OPENAI API KEY INPUT ---
 st.sidebar.header("🔑 API Settings")
-st.session_state.api_key = st.sidebar.text_input(
-    "Enter your OpenAI API Key:", value=st.session_state.get("api_key", config.OPENAI_API_KEY), type="password"
+
+# LOCKED API KEY INPUTS (Users cannot edit)
+st.sidebar.text_input(
+    "OpenAI API Key (Locked):",
+    value="●●●●●●●●●●●●●●",
+    type="password",
+    disabled=True  # Prevents user from modifying
 )
 
-# --- SEMANTIC SCHOLAR API KEY INPUT ---
-st.sidebar.header("📚 Semantic Scholar API")
-st.session_state.semantic_api_key = st.sidebar.text_input(
-    "Enter your Semantic Scholar API Key:",
-    value=st.session_state.get("semantic_api_key", config.SEMANTIC_SCHOLAR_API_KEY),
-    type="password"
+st.sidebar.text_input(
+    "Semantic Scholar API Key (Locked):",
+    value="●●●●●●●●●●●●●●",
+    type="password",
+    disabled=True  # Prevents user from modifying
 )
 
 # --- PROMPT SELECTION ---
@@ -91,26 +95,49 @@ for entry in st.session_state.chat_history[::-1]:  # Reverse to show newest firs
 st.sidebar.header("📊 Generate Biomarker Table")
 table_query = st.sidebar.text_input("Enter a query for structured biomarkers:", placeholder="List biomarkers for lung cancer")
 
+# --- Function to Extract Biomarker Data ---
+def extract_biomarkers(response_text):
+    """
+    Parses structured biomarker details from the model's response.
+
+    Args:
+        response_text (str): The retrieved text response.
+
+    Returns:
+        list of dict: Parsed biomarker data for DataFrame conversion.
+    """
+    biomarker_list = []
+    biomarker_entries = response_text.split("\n\n")  # Split by blank lines
+
+    for entry in biomarker_entries:
+        biomarker = {}
+        biomarker["Biomarker Name"] = re.search(r"\*\*Biomarker Name:\*\*\s*(.*)", entry)
+        biomarker["Associated Condition(s)"] = re.search(r"\*\*Associated Condition\(s\):\*\*\s*(.*)", entry)
+        biomarker["Clinical Significance"] = re.search(r"\*\*Clinical Significance:\*\*\s*(.*)", entry)
+        biomarker["Relevant Paper Reference"] = re.search(r"\*\*Relevant Paper Reference:\*\*\s*(.*)", entry)
+
+        if biomarker["Biomarker Name"]:
+            biomarker_list.append({key: val.group(1) if val else "N/A" for key, val in biomarker.items()})
+
+    return biomarker_list
+
+# --- TABLE GENERATION LOGIC ---
 if st.sidebar.button("Generate Table"):
     if not st.session_state.api_key:
         st.sidebar.warning("⚠️ Please enter an OpenAI API key.")
     else:
-        structured_query = (
-            "Generate a structured table of biomarkers with these columns:\n\n"
-            "**Biomarker Name** | **Associated Condition(s)** | **Clinical Significance** | **Relevant Paper Reference**\n\n"
-            + table_query
-        )
-        
-        table_response = retrieve_sections(docs, structured_query)
+        structured_query = config.PROMPT_TEMPLATES[st.session_state.selected_prompt] + "\n\n" + table_query
+        table_response = retrieve_sections(load_papers(config.PAPER_DIRECTORY), structured_query)
 
         # Convert response into table format
-        try:
-            rows = [row.split("|") for row in table_response.split("\n") if row]
-            df = pd.DataFrame(rows, columns=["Biomarker Name", "Associated Condition(s)", "Clinical Significance", "Relevant Paper Reference"])
+        biomarker_data = extract_biomarkers(table_response)
+        
+        if biomarker_data:
+            df = pd.DataFrame(biomarker_data)
             st.session_state.table_df = df
-        except:
+        else:
             st.session_state.table_df = None
-            st.sidebar.error("❌ Failed to generate a structured table.")
+            st.sidebar.error("❌ Failed to extract structured biomarker details.")
 
 # --- DISPLAY TABLE & DOWNLOAD OPTION ---
 if st.session_state.table_df is not None:

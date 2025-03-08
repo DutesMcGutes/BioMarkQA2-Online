@@ -1,18 +1,18 @@
 import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
+# Securely retrieve API keys
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-fallback-key")
+SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY", "your-fallback-key")
 
 # Base directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Directory where papers are stored
 PAPER_DIRECTORY = os.path.join(BASE_DIR, "../data/papers")
-
-# Default OpenAI API Key (Can be set in UI)
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-
-# Load Semantic Scholar API Key from environment variable
-SEMANTIC_SCHOLAR_API_KEY = "P1Z8ZAUhdW6vDNEbdr5AJ717o99bJqhtfRRzEaa6"
 
 # Default Prompts for Retrieval
 PROMPT_TEMPLATES = {
@@ -24,13 +24,13 @@ You are a biomedical AI tasked with retrieving scientific information.
 If direct evidence is unavailable, infer insights based on related findings,  
 mechanistic pathways, or immune responses documented in the literature.
 
-First, provide a concise **summary** of the key findings from the literature related to the user’s query. 
+First, provide a **summary** of the key findings from the literature related to the user’s query. 
 Explain any overarching biological mechanisms, trends, or key insights before listing individual biomarkers.
 
 Then, extract and organize all relevant biomarkers using the following structured format:
 
 **Summary of Findings:**  
-[Provide a concise but informative summary here]
+[Provide an informative summary up to three paragraphs here]
 
 **Biomarker Details:**
 
