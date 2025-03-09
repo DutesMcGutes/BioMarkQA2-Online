@@ -1,5 +1,8 @@
-paperqa
-pypdf
-tqdm
-argparse
-pytest
+# Standard Dependencies
+streamlit
+pandas
+requests
+python-dotenv
+
+# Install paperqa from GitHub
+git+https://github.com/Future-House/paper-qa.git
