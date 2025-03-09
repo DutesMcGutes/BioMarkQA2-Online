@@ -6,7 +6,7 @@ from biomarkqa2_model.retrieval import retrieve_sections
 from biomarkqa2_model.data_processing import load_papers
 from biomarkqa2_model import config
 
-# Add the root directory to sys.path so Python can find biomarkqa2_model
+# Ensure the root directory is in Python's path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from biomarkqa2_model.retrieval import retrieve_sections
