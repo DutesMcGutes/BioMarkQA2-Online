@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import sys
 import pandas as pd
 import re
 from biomarkqa2_model.retrieval import retrieve_sections
@@ -8,8 +9,6 @@ from biomarkqa2_model import config
 
 # Ensure the root directory is in Python's path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from biomarkqa2_model.retrieval import retrieve_sections
 
 # --- STREAMLIT PAGE SETTINGS ---
 st.set_page_config(page_title="BioMarkQA2 Chat", layout="wide")
