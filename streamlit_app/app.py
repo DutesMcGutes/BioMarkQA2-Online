@@ -6,6 +6,11 @@ from biomarkqa2_model.retrieval import retrieve_sections
 from biomarkqa2_model.data_processing import load_papers
 from biomarkqa2_model import config
 
+# Ensure biomarkqa2_model is found
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from biomarkqa2_model.retrieval import retrieve_sections
+
 # --- STREAMLIT PAGE SETTINGS ---
 st.set_page_config(page_title="BioMarkQA2 Chat", layout="wide")
 

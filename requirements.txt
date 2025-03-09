@@ -6,3 +6,6 @@ python-dotenv
 
 # Install paperqa from GitHub
 git+https://github.com/Future-House/paper-qa.git
+
+# Ensure biomarkqa2_model is correctly installed
+-e biomarkqa2_model/
