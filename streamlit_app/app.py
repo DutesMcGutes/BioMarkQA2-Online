@@ -77,7 +77,7 @@ if st.button("Send"):
     if not st.session_state.api_key:
         st.warning("⚠️ Please enter an OpenAI API key.")
     else:
-        docs = load_papers(config.PAPER_DIRECTORY)
+        docs = load_papers()  # Now automatically loads from GCS
         prompt_text = config.PROMPT_TEMPLATES[st.session_state.selected_prompt] + "\n\n" + user_query
         response = retrieve_sections(docs, prompt_text)
 

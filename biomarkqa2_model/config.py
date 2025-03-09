@@ -1,18 +1,24 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 
-# Securely retrieve API keys
+# Get the absolute path of the project's root directory
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+# API Keys (Securely loaded from environment variables)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-fallback-key")
 SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY", "your-fallback-key")
 
-# Base directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Google Cloud Storage Configuration
+GCS_BUCKET_NAME = "biomarkqa2-pdfs"  # Your GCS bucket name
+GCS_FOLDER = "papers/"  # Folder within the bucket where PDFs are stored
+GCS_BUCKET_URL = f"https://storage.googleapis.com/{GCS_BUCKET_NAME}/{GCS_FOLDER}"
 
-# Directory where papers are stored
-PAPER_DIRECTORY = os.path.join(BASE_DIR, "../data/papers")
+# Default Paths
+PAPER_DIRECTORY = GCS_BUCKET_URL  # Now using Google Cloud Storage
+CSV_DOWNLOAD_PATH = os.path.join(BASE_DIR, "data", "exported_tables.csv")  # Fixing the path
 
 # Default Prompts for Retrieval
 PROMPT_TEMPLATES = {

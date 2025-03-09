@@ -1,26 +1,32 @@
-import os
-import streamlit as st
+import requests
 from paperqa import Docs
+from biomarkqa2_model import config
 
-@st.cache_data  # Ensures papers are only loaded once per session
-def load_papers(directory):
+def load_papers():
     """
-    Loads academic papers into the PaperQA Docs object and caches them.
-
-    Args:
-        directory (str): Path to the directory containing papers.
-
-    Returns:
-        Docs: A PaperQA Docs object containing loaded papers.
+    Dynamically loads PDFs from Google Cloud Storage into PaperQA.
     """
-    docs = Docs()
-    for filename in os.listdir(directory):
-        file_path = os.path.join(directory, filename)
-        if file_path.endswith(".pdf"):  # Ensure only PDFs are loaded
-            try:
-                docs.add(file_path)
-            except Exception as e:
-                print(f"⚠️ Error loading {filename}: {str(e)}")
-    
-    print(f"📄 Total Papers Loaded: {len(docs.docs)}")
-    return docs
+    doc_collection = Docs()
+
+    # List of known PDFs in GCS (If listing is needed, we can automate it)
+    paper_filenames = [
+        "10.1002@mabi.201800407.pdf",
+        "10.1021@acsnano.0c08430.pdf",
+        "10.1177_1535370216647123.pdf"
+    ]
+
+    # Download and add PDFs to PaperQA dynamically
+    for filename in paper_filenames:
+        file_url = f"{config.GCS_BUCKET_URL}{filename}"
+        response = requests.get(file_url)
+
+        if response.status_code == 200:
+            # Save temp file and load into PaperQA
+            temp_path = f"/tmp/{filename}"
+            with open(temp_path, "wb") as f:
+                f.write(response.content)
+            doc_collection.add(temp_path)
+        else:
+            print(f"⚠️ Failed to fetch {filename} from GCS")
+
+    return doc_collection
