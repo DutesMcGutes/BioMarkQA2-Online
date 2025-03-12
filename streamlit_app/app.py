@@ -34,9 +34,9 @@ elif theme_choice == "Dark":
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
 
 if theme_detected == "dark":
-    st.image(LOGO_DARK, use_column_width=True)
+    st.image(LOGO_DARK, use_container_width=True)
 else:
-    st.image(LOGO_LIGHT, use_column_width=True)
+    st.image(LOGO_LIGHT, use_container_width=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
 
