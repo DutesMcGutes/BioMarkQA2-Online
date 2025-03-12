@@ -7,8 +7,5 @@ python-dotenv
 # Install paperqa from GitHub
 git+https://github.com/Future-House/paper-qa.git
 
-# Install biomarkqa2_model as a package
-./biomarkqa2_model
-
-#Install Streamlit
--e .
+# local model module 
+-e ./biomarkqa2_model
