@@ -8,4 +8,4 @@ python-dotenv
 git+https://github.com/Future-House/paper-qa.git
 
 # local model module 
--e ./biomarkqa2_model
+-e .
