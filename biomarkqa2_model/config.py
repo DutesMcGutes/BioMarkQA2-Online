@@ -8,8 +8,8 @@ load_dotenv()
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 # API Keys (Securely loaded from environment variables)
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-fallback-key")
-SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY", "your-fallback-key")
+OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY", os.getenv("OPENAI_API_KEY", ""))
+SEMANTIC_SCHOLAR_API_KEY = st.secrets.get("SEMANTIC_SCHOLAR_API_KEY", os.getenv("SEMANTIC_SCHOLAR_API_KEY", ""))
 
 # Google Cloud Storage Configuration
 GCS_BUCKET_NAME = "biomarkqa2-pdfs"  # Your GCS bucket name
